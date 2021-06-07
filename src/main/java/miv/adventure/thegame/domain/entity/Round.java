@@ -1,5 +1,6 @@
 package miv.adventure.thegame.domain.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,13 +13,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "round")
 public class Round {
     @Id
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
     private String name;
-    @JoinTable(name = "round_question",
-            joinColumns = @JoinColumn(name = "round_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions;
+
+    @ManyToOne(optional = false)
+    private Game game;
 }

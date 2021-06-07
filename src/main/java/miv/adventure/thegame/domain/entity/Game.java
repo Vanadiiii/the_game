@@ -1,5 +1,6 @@
 package miv.adventure.thegame.domain.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,16 +14,18 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "game")
 public class Game {
     @Id
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
     private String name;
-    @JoinTable(name = "game_round",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "round_id"))
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Round> rounds;
     private LocalDateTime start;
     @Enumerated(value = EnumType.STRING)
     private GameStatus status;
+
+    @ManyToMany(mappedBy = "games")
+    private List<User> users;
 }
