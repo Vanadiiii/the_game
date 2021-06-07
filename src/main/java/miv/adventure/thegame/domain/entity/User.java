@@ -23,6 +23,8 @@ public class User {
     private String surname;
     private String patronymic;
     private String email;
+    @Enumerated(value = EnumType.STRING)
+    private UserStatus status;
 
     @ManyToMany
     private List<Game> games;
