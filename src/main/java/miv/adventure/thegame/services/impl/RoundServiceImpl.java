@@ -8,6 +8,7 @@ import miv.adventure.thegame.exceptions.NoSuchRoundException;
 import miv.adventure.thegame.services.RoundService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,4 +30,28 @@ public class RoundServiceImpl implements RoundService {
                 .findById(id)
                 .orElseThrow(() -> NoSuchRoundException.of(id));
     }
+
+    @Override
+    public UUID createRound(Round round) {
+        return roundRepository
+                .saveAndFlush(round)
+                .getId();
+    }
+
+    @Override
+    public void deleteRound(UUID id) {
+        roundRepository
+                .deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Round updateRound(UUID id, Round round) {
+        round.setId(id);
+        roundRepository.deleteById(id);
+        roundRepository.saveAndFlush(round);
+        return round;
+    }
+
+
 }

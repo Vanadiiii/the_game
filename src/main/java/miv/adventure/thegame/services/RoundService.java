@@ -9,4 +9,10 @@ public interface RoundService {
     List<Round> getGameRounds(UUID gameId);
 
     Round getRound(UUID id);
+
+    UUID createRound(Round round);
+
+    void deleteRound(UUID id);
+
+    Round updateRound(UUID id, Round round);
 }
